@@ -1,0 +1,100 @@
+body{
+  background-color: #333333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  
+}
+
+#root{
+  width: 70%;
+  height: 100vh;
+  padding: 2%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  background-color: #ECECEC;
+  flex-wrap: nowrap;
+    
+}
+
+
+#quote-box{
+  margin:auto;
+  background-color: #c2fdc5;
+  width: 900px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  
+}
+#text-and-author{
+  padding-top: 30px;
+  min-height: 200px;
+  
+}
+#text-box{
+  display: flex;
+  
+}
+
+#text{
+  text-align: center;
+  margin: auto;
+  transition: opacity 0.5s;
+}
+
+#author-box{
+  margin: auto;
+  bottom: 0px;
+}
+
+#author{
+  text-align: center;
+}
+
+#buttons{
+  margin: auto;
+  
+}
+#new-quote{
+  width: 100px;
+  height: 50px; 
+  border: none;
+  background-color: #d3d3d3;
+  box-shadow: 10px 10px 0px #222222;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: TimesNewRoman,sans-serif;
+  font-weight: bold
+  
+  
+}
+#new-quote:hover{
+  background-color: #ffe200;
+}
+
+#new-quote:active{
+  background-color: #dbc300;
+  transform: translate(7px, 7px);
+  box-shadow: 3px 3px 0px #222222;
+}
+
+#tweet-quote-padding{
+  padding: 30px;
+  margin:auto;
+}
+
+#tweet-quote{
+  font-family: arial;
+  transition:  0.4s;
+}
+a:link, a:visited {
+  text-decoration: none;
+  color:black;
+}
+a:hover{
+  color:#9DD9F3;
+}
+
