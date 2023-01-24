@@ -2,20 +2,9 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,11 +17,65 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#drum-machine{
+  display: flex;
+  flex-direction: column;
+}
+
+.display{
+  padding: 20px 0;
+  margin: auto;
+  margin-top: 20px;
+  background-color: lightgrey;
+  width: 40vw;
+  max-width: 300px;
+}
+
+.buttons-div{
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3 , 1fr);
+  grid-template-rows: repeat(3 , 1fr);
+  gap: 8px;
+  width: fit-content;
+  align-items: center;
+  padding:20px;
+}
+
+.drum-pad{
+  
+  margin:auto;
+  width: 100px;
+  height:70px;
+  background-color: #61dafb;
+}
+
+.drum-pad-active{
+  
+  background-color: red;
+}
+
+.volume-text{
+  width: 60vw;
+  max-width: 500px;
+  margin: 10px auto;
+  
+  padding: 10px;
+  background-color: aquamarine;
+  
+}
+
+.volume-slider{
+  display: block;
+  margin: auto;
+}
+
+.sound-bank-number{
+  color:gainsboro;
+  font-size: 600px;
+  
+  margin-left: 60vw;
+  margin-top:-600px;
+  z-index: -1;
+  width: 100px;
 }
