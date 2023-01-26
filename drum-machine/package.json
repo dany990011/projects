@@ -1,7 +1,7 @@
 {
   "name": "drum-machine",
   "version": "0.1.0",
-  "homepage": "http://192.168.1.227/projects/drum-machine/build",
+  "homepage": "http://192.168.1.227/projects/calculator/build",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
