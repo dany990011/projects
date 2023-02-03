@@ -1,15 +1,22 @@
 
 import './App.css';
+import { useEffect } from 'react';
 
 function App() {
-  const seeker = document.getElementById("seeker")
-  const target = document.getElementById("target")
-  setInterval(frame , 1000)
   
+  
+  
+  useEffect(()=>{
+    setInterval(frame , 1000)
+  },[])
+
+
   function frame(){ 
+    const seeker = document.getElementById("seeker")
+    const target = document.getElementById("target")
     console.log(seeker.style.left);
-    //seeker.style.left += 10;
-    //seeker.style.top += 10;
+    seeker.style.left = 100;
+    seeker.style.top = 100;
   }
   return (
     <div className="App">
