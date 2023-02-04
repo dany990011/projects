@@ -12,18 +12,22 @@ function App() {
 
   useEffect(()=>{
     //const target = document.getElementById("target")
-    getPosition()
-    setInterval(frame , 1000)
-    
-  },[])
-
-  const getPosition = () => {
     const getX = targetRef.current.offsetLeft
     setX(getX)
     const getY = targetRef.current.offsetTop
     setY(getY)
     console.log(getX)
     console.log(getY)
+    console.log(x)
+    //getPosition()
+    setInterval(frame , 1000)
+    
+  },[])
+
+  const getPosition = () => {
+    
+    
+    
   }
 
 
@@ -31,8 +35,8 @@ function App() {
     //const seeker = document.getElementById("seeker")
     //const target = document.getElementById("target")
     //const targetLeft = target.style.left
-    getPosition()
     console.log(x)
+   
     setPosition((prev)=>{
       return{
 
