@@ -1,31 +1,46 @@
 
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function App() {
+
   const [position, setPosition] = useState({left : 0, top: 0})
-  const [target, steTarget] = useState({left : document.getElementById("target").style.left})
-  
-  
+  const [x , setX] = useState()
+  const [y , setY] = useState()
+  const targetRef = useRef()
+
+
   useEffect(()=>{
-    setInterval(frame , 100)
+    //const target = document.getElementById("target")
+    getPosition()
+    setInterval(frame , 1000)
+    
   },[])
+
+  const getPosition = () => {
+    const getX = targetRef.current.offsetLeft
+    setX(getX)
+    const getY = targetRef.current.offsetTop
+    setY(getY)
+    console.log(getX)
+    console.log(getY)
+  }
 
 
   function frame(){ 
     //const seeker = document.getElementById("seeker")
     //const target = document.getElementById("target")
+    //const targetLeft = target.style.left
+    getPosition()
+    console.log(x)
     setPosition((prev)=>{
       return{
 
-        left: prev.left + target,
-        top: prev.top + 3
+        left: x,
+        top: y
 
       }
     })
-    //console.log(seeker.style.left);
-    //seeker.style.left = 100;
-    //seeker.style.top = 100;
   }
   return (
     <div className="App">
@@ -34,7 +49,7 @@ function App() {
       </header>
       <div className='world'>
         <div id="seeker" className='seeker' style={{left: position.left, top: position.top}}></div>
-        <div id="target" className='target'></div>
+        <div id="target" className='target' ref={targetRef}></div>
       </div>
     </div>
   );
