@@ -2,6 +2,7 @@ import './App.css';
 import React from 'react';
 import { render } from 'react-dom';
 
+
 class App extends React.Component {
   constructor(props){
     super(props)
@@ -31,7 +32,7 @@ class App extends React.Component {
 
   secoundsCounter(){
     this.audio = document.getElementById("beep")
-    this.audio.volume = 0.3
+    this.audio.volume = 0.1
     if(this.state.timerRunning){
     
       this.timer = setTimeout(()=>{
@@ -44,19 +45,19 @@ class App extends React.Component {
         }
         this.setState({currentSecounds: this.state.currentSecounds-1})
         this.secoundsCounter()
-      },10)
-
-      if((this.state.currentSecounds <= 1)&&(this.state.currentMinutes <= 0)&&(this.state.display != "break")){
+      },1000)
+        
+      if((this.state.currentSecounds <= 0)&&(this.state.currentMinutes <= 0)&&(this.state.display != "break")){
         this.setState({timerRunning: false})
-        clearTimeout(this.timer)
+        
         this.audio.play()
         this.startBreak()
         return
       }
 
-      if((this.state.currentSecounds <= 1)&&(this.state.currentMinutes <= 0)&&(this.state.display == "break")){
+      if((this.state.currentSecounds <= 0)&&(this.state.currentMinutes <= 0)&&(this.state.display == "break")){
         this.setState({timerRunning: false})
-        clearTimeout(this.timer)
+        
         this.audio.play()
         this.startSession()
         return
@@ -81,9 +82,13 @@ class App extends React.Component {
   }
 
   startStopTimer(){
-    
-    this.setState({timerRunning: !this.state.timerRunning}, () => this.secoundsCounter())
-    
+    if(this.state.currentMinutes == this.state.sessionLength){
+    setTimeout(()=>{
+    this.setState({timerRunning: !this.state.timerRunning}, () => {this.secoundsCounter()})
+    },1000)
+    }else{
+      this.setState({timerRunning: !this.state.timerRunning}, () => {this.secoundsCounter()})
+    }
   }
 
   resetTimer(){
@@ -122,11 +127,16 @@ class App extends React.Component {
   }
 
   startBreak(){
-    this.setState({currentMinutes: this.state.breakLength, currentSecounds: "00", timerRunning:true, display: "break"}, () => this.secoundsCounter())
+    this.setState({currentMinutes: this.state.breakLength, currentSecounds: "00", timerRunning:true, display: "break"}, () => setTimeout(()=>{
+    this.secoundsCounter()
+    },1000))
   }
 
   startSession(){
-    this.setState({currentMinutes: this.state.sessionLength, currentSecounds: "00", timerRunning:true, display: "session"}, () => this.secoundsCounter()) 
+    this.setState({currentMinutes: this.state.sessionLength, currentSecounds: "00", timerRunning:true, display: "session"}, () => 
+                  setTimeout(()=>{
+                    this.secoundsCounter()
+                  },1000))
   }
 
   
@@ -173,7 +183,6 @@ class App extends React.Component {
     );
   }
 }
-
 
 
 
