@@ -94,14 +94,14 @@ class App extends React.Component {
   }
 
   upSessionLength(){
-    if(this.state.timerRunning){
+    if(this.state.timerRunning||(this.state.sessionLength >= 60)){
       return
     }
     this.setState({sessionLength: this.state.sessionLength+1,currentMinutes: this.state.sessionLength+1})
   }
 
   downSessionLength(){
-    if(this.state.timerRunning){
+    if(this.state.timerRunning||(this.state.sessionLength <= 1)){
       return
     }
     this.setState({sessionLength: this.state.sessionLength-1,currentMinutes: this.state.sessionLength-1})
@@ -144,9 +144,11 @@ class App extends React.Component {
           <div>
             
             <div>
-              <h2 id="session-label">Session length:  {this.state.sessionLength}</h2>
-              <h2 id="break-label">Break length:  {this.state.breakLength}</h2>
-              <h1 id="time-left">{this.state.currentMinutes} : {this.state.currentSecounds}</h1>
+              <h3 id="session-label">Session length: </h3>
+              <h1 id="session-length">{this.state.sessionLength}</h1>
+              <h3 id="break-label">Break length: </h3>
+              <h1 id="break-length">{this.state.breakLength}</h1>
+              <h1 id="time-left">{this.state.currentMinutes}:{this.state.currentSecounds}</h1>
               <h3 id="timer-label">status: {this.state.display}</h3>
               <audio id="beep" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"></audio>
             </div>
