@@ -4,7 +4,7 @@ import fetch from 'node-fetch'
 
 const client_id = "79f978f6465541ef8137126847d2aa33"
 const client_secret = "fb025e50cbd549628bb3316a81a5686f"
-const redirect_uri = "http://127.0.0.1:3000/callback"
+const redirect_uri = "http://5.29.1.154:3000/callback/"
 const scope = "user-read-private user-read-email playlist-modify-public playlist-modify-private"
 
 
@@ -25,6 +25,7 @@ app.get('/login', (req, res)=>{
 })
 
 app.get("/callback", (rec, res) =>{
+  console.log("Callback URL:", rec.url);
   const code = rec.query.code
   //res.redirect("http://127.0.0.1:5173/callback")
   const authOptions = {
@@ -35,11 +36,14 @@ app.get("/callback", (rec, res) =>{
       grant_type: 'authorization_code'
     },
     headers: {
-      "Authorization" : "basic " + (Buffer.from(client_id + ":" + client_secret).toString("base64"))
+      "Authorization" : "basic " + (Buffer.from(client_id + ":" + client_secret).toString("base64")),
+      
+
     },
     json: true
   }
-  console.log(authOptions.headers.Authorization)
+  console.log(rec.params)
+  //console.log(authOptions.headers.Authorization)
 
   fetch(authOptions.url,{
     method: "POST",
@@ -51,11 +55,9 @@ app.get("/callback", (rec, res) =>{
   })
   .then(response => response.json())
   .then(data=>{
-    //console.log(data)
     const access_token = data.access_token
     const refresh_token = data.refresh_token
-
-    res.redirect("http://127.0.0.1:5173/callback#" + "access_token="+access_token+"&refresh_token"+refresh_token)
+    res.redirect("http://5.29.1.154/projects/spotify-playlist/dist" + "#access_token="+access_token+"&refresh_token="+refresh_token)
 
     fetch("https://api.spotify.com/v1/me",{
       headers: {

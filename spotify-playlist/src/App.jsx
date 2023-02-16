@@ -28,7 +28,7 @@ function App() {
   
 
   function login(){
-    window.location = "http://127.0.0.1:3000/login"
+    window.location = "http://5.29.1.154:3000/login"
   }
   
   
