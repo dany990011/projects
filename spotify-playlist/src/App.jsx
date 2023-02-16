@@ -8,24 +8,29 @@ const searchParams = new URLSearchParams(hash)
 const accessToken = searchParams.get("#access_token")
 console.log(accessToken)
 
+
 let topSongsAmount = 3
+let userId
 const includedArtists = []
+const songIds = []
 
 
 function App() {
   const [userData ,setUserData] = useState()
+  const [loginStatus , setLoginStatus] = useState()
   const [searchTerm, setSearchTerm] = useState("")
   const [searchData, setSearchData] = useState("")
   const [artistsArray, setArtistsArray] = useState([])
   const [topSongs, setTopSongs] = useState([])
 
 
-  
+
   
 
   function login(){
     window.location = "http://127.0.0.1:3000/login"
   }
+  
   
   function getUserData(){
     setUserData(
@@ -38,10 +43,12 @@ function App() {
     .then(response => response.json())
     .then(data =>{
       console.log(data)
+      userId = data.id
       setUserData(
         <dl className="user-info-list">
         <dt>name:</dt><dd>{data.display_name}</dd>
         <dt>email:</dt><dd>{data.email}</dd>
+        <dt>id:</dt><dd>{data.id}</dd>
         </dl>
       )
     })
@@ -72,16 +79,6 @@ function App() {
     if(searchTerm != ""){
     console.log("USEHOOK")
     
-    // fetch("https://api.spotify.com/v1/search?q="+searchTerm+"&type=artist&limit=5",{
-    //   headers: {
-    //     "Authorization" : "Bearer " + accessToken
-    //   }
-    // })
-    // .then(response => response.json())
-    // .then(data =>{
-    //   console.log(data.artists)
-    //   setSearchData(data)
-    // })
   }else null
   },[artistsArray])
 
@@ -92,25 +89,57 @@ function App() {
       return
     }
     setArtistsArray([...artistsArray, searchData.artists.items[index]])
-    //console.log(artistsArray)
+    
   }
 
-  function createPlaylist(){
-    artistsArray.map((artist,index)=>{
-      const artistId = artist.id
-      fetch("https://api.spotify.com/v1/artists/"+artistId+"/top-tracks?country=US&limit=3",{
-        method: "GET",
-        headers: {
-          'Authorization': 'Bearer ' + accessToken
-        }
-      })
-      .then(response => response.json())
-      .then(data => { 
-        console.log(data)
-      })
+  useEffect(()=>{
+    getTopSongs()
+  },[artistsArray])
 
+  function createPlaylist(){
+    topSongs.map((song,index)=>{
+      songIds.push(song.uri)
+      console.log("this is SongIds:")
+      console.log(songIds)
     })
-    
+    fetch("https://api.spotify.com/v1/me",{
+      headers: {
+        "Authorization" : "Bearer " + accessToken
+      }
+    })
+    .then(response => response.json())
+    .then(data =>{
+      userId = data.id
+      fetch("https://api.spotify.com/v1/users/"+userId+"/playlists",{
+      method: "POST",
+      headers: {
+        "Authorization" : "Bearer " + accessToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: "PlaceHolderName",
+        public: true
+      })
+      })
+        .then(response => response.json())
+        .then(data => {console.log("plalist id is " + data.id)
+          fetch("https://api.spotify.com/v1/playlists/"+data.id+"/tracks", {
+            method: 'POST',
+            headers: {
+              "Authorization": "Bearer " + accessToken,
+              "Content-Type": "application/json"
+            },
+              body: JSON.stringify({
+                uris: songIds
+            })
+          })
+          .then(response => response.json)
+          .then(data => {
+            console.log ("tracks added to playlist !")
+            console.log(data)
+          })
+      })
+    })
   }
 
   function handleChange(event){
@@ -144,12 +173,20 @@ function App() {
       }
     })
   }
+  function ShowLoginStatus(){
+    if(!accessToken){
+      return(
+        <h2 style={{color:"red"}}>Please log in to use the site</h2>
+      )
+    }
+  }
+
+
   function ShowTopSongs(){
     if(topSongs){
       console.log("topSongs here: ")
       console.log(topSongs)
       return topSongs.map((data,index)=>{
-        //console.log(data.name)
         return(
           <div className='top-songs'>
           <p>{data.name}</p>
@@ -168,9 +205,9 @@ function App() {
    if(searchData.artists){
     return searchData.artists.items.map((artist,index)=>{
       return(
-      <div className='results-div'>
+      <div onClick={()=>{artistChosen(index)} } className='results-div'>
         {console.log(searchData.artists.items[index].name)}
-        <p onClick={()=>{artistChosen(index)} }>{searchData.artists.items[index].name}</p>
+        <p className='results-text' >{searchData.artists.items[index].name}</p>
 
       </div>
       )
@@ -192,19 +229,22 @@ function App() {
   return (
   <div className='App'>
     <div className='buttons-div'>
-      <button onClick={login}>button</button>
-      <button onClick={getUserData}>user data</button>
-      <button onClick={createPlaylist}>create plalist</button>
+      <button onClick={login}>Log In</button>
+      <button onClick={getUserData}>User Data</button>
       <button onClick={getTopSongs}>show top songs</button>
     </div>
+      <ShowLoginStatus/>
       <div className="main">
         <div className='search-div'>
         <input onChange={handleChange}></input>
         <ShowSearchResults/>
         </div>
         <div className='side-div'>
-        <div className="artist-list-div"><ArtistList/></div>
-        <div className='top-songs-div'><ShowTopSongs/></div>
+          <div className="artist-list-div"><ArtistList/></div>
+          <div className='playlist-div'>
+            <div className='top-songs-div'><ShowTopSongs/></div>
+            <button className='create-playlist-button' onClick={createPlaylist}>Create Playlist</button>
+          </div>
         </div>
         
       </div>

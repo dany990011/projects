@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 const client_id = "79f978f6465541ef8137126847d2aa33"
 const client_secret = "fb025e50cbd549628bb3316a81a5686f"
 const redirect_uri = "http://127.0.0.1:3000/callback"
-const scope = "user-read-private user-read-email"
+const scope = "user-read-private user-read-email playlist-modify-public playlist-modify-private"
 
 
 
